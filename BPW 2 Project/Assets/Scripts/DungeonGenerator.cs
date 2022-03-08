@@ -66,9 +66,9 @@ public class DungeonGenerator : MonoBehaviour {
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
 
-                    if(Mathf.Abs(x) == Mathf.Abs(y)) {
-                        continue;
-                    }
+                    // if(Mathf.Abs(x) == Mathf.Abs(y)) {
+                    //     continue;
+                    // }
                     Vector3Int newPos = kv + new Vector3Int(x,y,0);
 
                     if(dungeon.ContainsKey(newPos)) {
@@ -139,8 +139,8 @@ public class DungeonGenerator : MonoBehaviour {
 
     public bool CanRoomFitInDungeon(Room room) {
 
-        for(int x = room.minX-1; x <= room.maxX+1; x++) {
-            for(int y = room.minY-1; y <= room.maxY+1; y++) {
+        for(int x = room.minX-2; x <= room.maxX+2; x++) {
+            for(int y = room.minY-2; y <= room.maxY+2; y++) {
                 if(dungeon.ContainsKey(new Vector3Int(x,y,0))) {
                     return false;
                 }
