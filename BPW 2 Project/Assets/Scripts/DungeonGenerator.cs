@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public enum TileType {Floor,Wall}
 
@@ -30,10 +31,10 @@ public class DungeonGenerator : MonoBehaviour {
             int minX = Random.Range(0,gridWidth);
             int maxX = minX + Random.Range(minSize,maxSize+1);
 
-            int minZ = Random.Range(0,gridHeight);
-            int maxZ = minZ + Random.Range(minSize,maxSize+1);
+            int minY = Random.Range(0,gridHeight);
+            int maxY = minY + Random.Range(minSize,maxSize+1);
 
-            Room room = new Room(minX,maxX,minZ,maxZ);
+            Room room = new Room(minX,maxX,minY,maxY);
             if(CanRoomFitInDungeon(room)) {
                 AddRoomToDungeon(room);
             }
@@ -43,7 +44,69 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
 
+        for(int i = 0; i < roomList.Count; i++) {
+
+            Room room = roomList[i];
+            Room targetRoom = roomList[(i + Random.Range(1,roomList.Count)) % roomList.Count];
+            ConnectRooms(room,targetRoom);
+
+        }
+
+        AllocateWalls();
+
         SpawnDungeon();
+
+    }
+
+    public void AllocateWalls() {
+
+        var keys = dungeon.Keys.ToList();
+
+        foreach(var kv in keys) {
+            for(int x = -1; x <= 1; x++) {
+                for(int y = -1; y <= 1; y++) {
+
+                    if(Mathf.Abs(x) == Mathf.Abs(y)) {
+                        continue;
+                    }
+                    Vector3Int newPos = kv + new Vector3Int(x,y,0);
+
+                    if(dungeon.ContainsKey(newPos)) {
+                        continue;
+                    }
+
+                    dungeon.Add(newPos,TileType.Wall);
+
+                }
+            }
+
+        }
+
+    }
+
+    public void ConnectRooms(Room roomOne,Room RoomTwo) {
+
+        Vector3Int posOne = roomOne.GetCenter();
+        Vector3Int posTwo = RoomTwo.GetCenter();
+
+        int dirX = posTwo.x > posOne.x ? 1 : -1;
+        int x = 0;
+        for(x = posOne.x; x != posTwo.x; x += dirX) {
+            Vector3Int position = new Vector3Int(x,posOne.y,0);
+            if(dungeon.ContainsKey(position)) {
+                continue;
+            }
+            dungeon.Add(new Vector3Int(x,posOne.y,0),TileType.Floor);
+        }
+
+        int dirY = posTwo.y > posOne.y ? 1 : -1;
+        for(int y = posOne.y; y != posTwo.y; y += dirY) {
+            Vector3Int position = new Vector3Int(x,y,0);
+            if(dungeon.ContainsKey(position)) {
+                continue;
+            }
+            dungeon.Add(new Vector3Int(x,y,0),TileType.Floor);
+        }
 
     }
 
@@ -67,8 +130,8 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void AddRoomToDungeon(Room room) {
         for(int x = room.minX; x <= room.maxX; x++) {
-            for(int z = room.minZ; z <= room.maxZ; z++) {
-                dungeon.Add(new Vector3Int(x,0,z),TileType.Floor);
+            for(int y = room.minY; y <= room.maxY; y++) {
+                dungeon.Add(new Vector3Int(x,y,0),TileType.Floor);
             }
         }
         roomList.Add(room);
@@ -76,9 +139,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     public bool CanRoomFitInDungeon(Room room) {
 
-        for(int x = room.minX; x <= room.maxX; x++) {
-            for(int z = room.minZ; z <= room.maxZ; z++) {
-                if(dungeon.ContainsKey(new Vector3Int(x,0,z))) {
+        for(int x = room.minX-1; x <= room.maxX+1; x++) {
+            for(int y = room.minY-1; y <= room.maxY+1; y++) {
+                if(dungeon.ContainsKey(new Vector3Int(x,y,0))) {
                     return false;
                 }
             }
@@ -94,14 +157,20 @@ public class Room {
     public int minX;
     public int maxX;
 
-    public int minZ;
-    public int maxZ;
+    public int minY;
+    public int maxY;
 
-    public Room(int _minX,int _maxX,int _minZ,int _maxZ) {
+    public Room(int _minX,int _maxX,int _minY,int _maxY) {
         minX = _minX;
         maxX = _maxX;
-        minZ = _minZ;
-        maxZ = _maxZ;
+        minY = _minY;
+        maxY = _maxY;
+    }
+
+    public Vector3Int GetCenter() {
+
+        return new Vector3Int(Mathf.RoundToInt(Mathf.Lerp(minX,maxX,0.5f)),Mathf.RoundToInt(Mathf.Lerp(minY,maxY,0.5f)),0);
+
     }
 
 }
