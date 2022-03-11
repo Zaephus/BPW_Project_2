@@ -59,8 +59,22 @@ public class DungeonGenerator : MonoBehaviour {
                 }
 
                 if(Vector3Int.Distance(room.GetCenter(),roomList[j].GetCenter()) <= corridorRange) {
-                    ConnectRooms(room,roomList[j]);
+                    if(CanConnectRooms(room,roomList[j])) {
+                        if((roomList[j].GetCenter().x < room.minX && roomList[j].GetCenter().x > room.maxX) || (roomList[j].GetCenter().y < room.minY && roomList[j].GetCenter().y > room.maxY)) {
+                            if(!room.connectedRooms.Contains(roomList[j]) && !roomList[j].connectedRooms.Contains(room)) {
+                                ConnectRooms(room,roomList[j]);
+                                continue;
+                            }
+                        }
+                        else {
+                            ConnectRooms(room,roomList[j]);
+                        }
+                    }
                 }
+
+                // if(Vector3Int.Distance(room.GetCenter(),roomList[j].GetCenter()) <= corridorRange) {
+                //     ConnectRooms(room,roomList[j]);
+                // }
 
             }
 
@@ -103,6 +117,9 @@ public class DungeonGenerator : MonoBehaviour {
         Vector3Int posOne = roomOne.GetCenter();
         Vector3Int posTwo = roomTwo.GetCenter();
 
+        roomOne.connectedRooms.Add(roomTwo);
+        roomTwo.connectedRooms.Add(roomOne);
+
         int dirX = posTwo.x > posOne.x ? 1 : -1;
         int x = 0;
         for(x = posOne.x; x != posTwo.x; x += dirX) {
@@ -110,18 +127,7 @@ public class DungeonGenerator : MonoBehaviour {
             if(dungeon.ContainsKey(position)) {
                 continue;
             }
-            for(int i = -3; i <= 3; i++) {
-                Vector3Int pos = new Vector3Int(x,posOne.y+i,0);
-                TileType value;
-                if(dungeon.TryGetValue(pos,out value)) {
-                    if(value == TileType.Corridor) {
-                        goto endOfLoop;
-                    }
-                }
-            }
             dungeon.Add(new Vector3Int(x,posOne.y,0),TileType.Corridor);
-
-            endOfLoop : {}
 
         }
 
@@ -131,20 +137,67 @@ public class DungeonGenerator : MonoBehaviour {
             if(dungeon.ContainsKey(position)) {
                 continue;
             }
-            for(int i = -3; i <= 3; i++) {
+            dungeon.Add(new Vector3Int(x,y,0),TileType.Corridor);
+
+        }
+
+    }
+
+    public bool CanConnectRooms(Room roomOne,Room roomTwo) {
+
+        bool canConnect = true;
+
+        Vector3Int posOne = roomOne.GetCenter();
+        Vector3Int posTwo = roomTwo.GetCenter();
+
+        int corridorBuffer = 3;
+
+        int dirX = posTwo.x > posOne.x ? 1 : -1;
+        int x = 0;
+        for(x = posOne.x; x != posTwo.x; x += dirX) {
+            Vector3Int position = new Vector3Int(x,posOne.y,0);
+            if(dungeon.ContainsKey(position)) {
+                if(dungeon[position] == TileType.Room) {
+                    if(!roomOne.IsPointInRoom(position) && !roomTwo.IsPointInRoom(position)) {
+                        canConnect = false;
+                    }
+                }
+            }
+            for(int i = -corridorBuffer; i <= corridorBuffer; i++) {
+                Vector3Int pos = new Vector3Int(x,posOne.y+i,0);
+                TileType value;
+                if(dungeon.TryGetValue(pos,out value)) {
+                    if(value == TileType.Corridor) {
+                        canConnect = false;
+                    }
+                }
+            }
+
+        }
+
+        int dirY = posTwo.y > posOne.y ? 1 : -1;
+        for(int y = posOne.y; y != posTwo.y; y += dirY) {
+            Vector3Int position = new Vector3Int(x,y,0);
+            if(dungeon.ContainsKey(position)) {
+                if(dungeon[position] == TileType.Room) {
+                    if(!roomOne.IsPointInRoom(position) && !roomTwo.IsPointInRoom(position)) {
+                        canConnect = false;
+                    }
+                }
+            }
+            for(int i = -corridorBuffer; i <= corridorBuffer; i++) {
                 Vector3Int pos = new Vector3Int(x+i,y,0);
                 TileType value;
                 if(dungeon.TryGetValue(pos,out value)) {
                     if(value == TileType.Corridor) {
-                        goto endOfLoop;
+                        canConnect = false;
                     }
                 }
             }
-            dungeon.Add(new Vector3Int(x,y,0),TileType.Corridor);
-
-            endOfLoop : {}
 
         }
+
+        return canConnect;
 
     }
 
@@ -202,6 +255,8 @@ public class Room {
     public int minY;
     public int maxY;
 
+    public List<Room> connectedRooms = new List<Room>();
+
     public Room(int _minX,int _maxX,int _minY,int _maxY) {
         minX = _minX;
         maxX = _maxX;
@@ -210,9 +265,11 @@ public class Room {
     }
 
     public Vector3Int GetCenter() {
-
         return new Vector3Int(Mathf.RoundToInt(Mathf.Lerp(minX,maxX,0.5f)),Mathf.RoundToInt(Mathf.Lerp(minY,maxY,0.5f)),0);
+    }
 
+    public bool IsPointInRoom(Vector3Int point) {
+        return point.x >= minX-1 && point.x <= maxX+1 && point.y >= minY-1 && point.y <= maxY+1;
     }
 
 }

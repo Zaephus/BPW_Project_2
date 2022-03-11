@@ -156,7 +156,7 @@ MonoBehaviour:
   wallPrefab: {fileID: 1236476040023200115, guid: ed8ed08c36ed83e4b9bb14dd05b40427, type: 3}
   gridWidth: 30
   gridHeight: 30
-  corridorRangeModifier: 1
+  corridorRangeModifier: 0
   numRooms: 6
   minSize: 3
   maxSize: 7
