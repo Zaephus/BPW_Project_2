@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public enum TileType {Floor,Wall}
+public enum TileType {Room,Corridor,Wall}
 
 public class DungeonGenerator : MonoBehaviour {
 
@@ -12,6 +12,8 @@ public class DungeonGenerator : MonoBehaviour {
 
     public int gridWidth = 100;
     public int gridHeight = 100;
+
+    public float corridorRangeModifier = 0.7f;
 
     public int numRooms = 10;
     public int minSize = 3;
@@ -44,11 +46,26 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
 
+        float corridorRange = (gridWidth+gridHeight)/(2+corridorRangeModifier);
+
         for(int i = 0; i < roomList.Count; i++) {
 
             Room room = roomList[i];
-            Room targetRoom = roomList[(i + Random.Range(1,roomList.Count)) % roomList.Count];
-            ConnectRooms(room,targetRoom);
+
+            for(int j = 0; j < roomList.Count; j++) {
+
+                if(j == i) {
+                    continue;
+                }
+
+                if(Vector3Int.Distance(room.GetCenter(),roomList[j].GetCenter()) <= corridorRange) {
+                    ConnectRooms(room,roomList[j]);
+                }
+
+            }
+
+            // Room targetRoom = roomList[(i + Random.Range(1,roomList.Count)) % roomList.Count];
+            // ConnectRooms(room,targetRoom);
 
         }
 
@@ -66,9 +83,6 @@ public class DungeonGenerator : MonoBehaviour {
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
 
-                    // if(Mathf.Abs(x) == Mathf.Abs(y)) {
-                    //     continue;
-                    // }
                     Vector3Int newPos = kv + new Vector3Int(x,y,0);
 
                     if(dungeon.ContainsKey(newPos)) {
@@ -84,10 +98,10 @@ public class DungeonGenerator : MonoBehaviour {
 
     }
 
-    public void ConnectRooms(Room roomOne,Room RoomTwo) {
+    public void ConnectRooms(Room roomOne,Room roomTwo) {
 
         Vector3Int posOne = roomOne.GetCenter();
-        Vector3Int posTwo = RoomTwo.GetCenter();
+        Vector3Int posTwo = roomTwo.GetCenter();
 
         int dirX = posTwo.x > posOne.x ? 1 : -1;
         int x = 0;
@@ -96,7 +110,19 @@ public class DungeonGenerator : MonoBehaviour {
             if(dungeon.ContainsKey(position)) {
                 continue;
             }
-            dungeon.Add(new Vector3Int(x,posOne.y,0),TileType.Floor);
+            for(int i = -3; i <= 3; i++) {
+                Vector3Int pos = new Vector3Int(x,posOne.y+i,0);
+                TileType value;
+                if(dungeon.TryGetValue(pos,out value)) {
+                    if(value == TileType.Corridor) {
+                        goto endOfLoop;
+                    }
+                }
+            }
+            dungeon.Add(new Vector3Int(x,posOne.y,0),TileType.Corridor);
+
+            endOfLoop : {}
+
         }
 
         int dirY = posTwo.y > posOne.y ? 1 : -1;
@@ -105,7 +131,19 @@ public class DungeonGenerator : MonoBehaviour {
             if(dungeon.ContainsKey(position)) {
                 continue;
             }
-            dungeon.Add(new Vector3Int(x,y,0),TileType.Floor);
+            for(int i = -3; i <= 3; i++) {
+                Vector3Int pos = new Vector3Int(x+i,y,0);
+                TileType value;
+                if(dungeon.TryGetValue(pos,out value)) {
+                    if(value == TileType.Corridor) {
+                        goto endOfLoop;
+                    }
+                }
+            }
+            dungeon.Add(new Vector3Int(x,y,0),TileType.Corridor);
+
+            endOfLoop : {}
+
         }
 
     }
@@ -115,7 +153,11 @@ public class DungeonGenerator : MonoBehaviour {
         foreach(KeyValuePair<Vector3Int,TileType> kv in dungeon) {
             switch(kv.Value) {
                 
-                case TileType.Floor:
+                case TileType.Room:
+                    Instantiate(floorPrefab,kv.Key,Quaternion.identity,transform);
+                    break;
+                
+                case TileType.Corridor:
                     Instantiate(floorPrefab,kv.Key,Quaternion.identity,transform);
                     break;
 
@@ -131,7 +173,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void AddRoomToDungeon(Room room) {
         for(int x = room.minX; x <= room.maxX; x++) {
             for(int y = room.minY; y <= room.maxY; y++) {
-                dungeon.Add(new Vector3Int(x,y,0),TileType.Floor);
+                dungeon.Add(new Vector3Int(x,y,0),TileType.Room);
             }
         }
         roomList.Add(room);
