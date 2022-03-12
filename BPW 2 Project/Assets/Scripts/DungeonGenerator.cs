@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public enum TileType {Room,Corridor,Wall}
 
@@ -9,6 +9,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     public GameObject floorPrefab;
     public GameObject wallPrefab;
+    public GameObject playerPrefab;
+
+    public int seed = 0;
 
     public int gridWidth = 100;
     public int gridHeight = 100;
@@ -23,7 +26,17 @@ public class DungeonGenerator : MonoBehaviour {
     public List<Room> roomList = new List<Room>();
 
     public void Start() {
+        GetSeed();
         Generate();
+    }
+
+    public void GetSeed() {
+
+        if(seed == 0) {
+            seed = Random.Range(1000,9999);
+        }
+        Random.InitState(seed);
+
     }
 
     public void Generate() {
@@ -72,14 +85,7 @@ public class DungeonGenerator : MonoBehaviour {
                     }
                 }
 
-                // if(Vector3Int.Distance(room.GetCenter(),roomList[j].GetCenter()) <= corridorRange) {
-                //     ConnectRooms(room,roomList[j]);
-                // }
-
             }
-
-            // Room targetRoom = roomList[(i + Random.Range(1,roomList.Count)) % roomList.Count];
-            // ConnectRooms(room,targetRoom);
 
         }
 
@@ -128,7 +134,6 @@ public class DungeonGenerator : MonoBehaviour {
                 continue;
             }
             dungeon.Add(new Vector3Int(x,posOne.y,0),TileType.Corridor);
-
         }
 
         int dirY = posTwo.y > posOne.y ? 1 : -1;
@@ -138,7 +143,6 @@ public class DungeonGenerator : MonoBehaviour {
                 continue;
             }
             dungeon.Add(new Vector3Int(x,y,0),TileType.Corridor);
-
         }
 
     }
@@ -172,7 +176,6 @@ public class DungeonGenerator : MonoBehaviour {
                     }
                 }
             }
-
         }
 
         int dirY = posTwo.y > posOne.y ? 1 : -1;
@@ -194,7 +197,6 @@ public class DungeonGenerator : MonoBehaviour {
                     }
                 }
             }
-
         }
 
         return canConnect;
@@ -204,6 +206,7 @@ public class DungeonGenerator : MonoBehaviour {
     public void SpawnDungeon() {
 
         foreach(KeyValuePair<Vector3Int,TileType> kv in dungeon) {
+
             switch(kv.Value) {
                 
                 case TileType.Room:
@@ -219,7 +222,12 @@ public class DungeonGenerator : MonoBehaviour {
                     break;
                 
             }
+
         }
+
+        Room randomRoom = roomList[Random.Range(0,roomList.Count)];
+        Vector3Int randomTilePos = randomRoom.GetRandomTile();
+        Instantiate(playerPrefab,randomTilePos,Quaternion.identity,transform);
 
     }
 
@@ -270,6 +278,10 @@ public class Room {
 
     public bool IsPointInRoom(Vector3Int point) {
         return point.x >= minX-1 && point.x <= maxX+1 && point.y >= minY-1 && point.y <= maxY+1;
+    }
+
+    public Vector3Int GetRandomTile() {
+        return new Vector3Int(Mathf.RoundToInt(Random.Range(minX,maxX + 1)),(Mathf.RoundToInt(Random.Range(minY,maxY + 1))),0);
     }
 
 }

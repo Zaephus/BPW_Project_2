@@ -5,38 +5,162 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     Rigidbody2D body;
-    public Camera playerCamera;
+    public Transform playerTransform;
+    private Vector3Int playerPosition;
+    DungeonGenerator dungeonGen;
 
-    float horizontal;
-    float vertical;
-    float moveLimiter = 0.7f;
+    public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int, TileType>();
 
-    public float runSpeed = 20.0f;
+    public void Start() {
 
-    void Start() {
         body = GetComponent<Rigidbody2D>();
+        dungeonGen = FindObjectOfType<DungeonGenerator>();
+        playerPosition = Vector3Int.RoundToInt(playerTransform.position);
+        dungeon = dungeonGen.dungeon;
+        
     }
 
-    void Update() {
+    public bool CanRight() {
 
-        // Gives a value between -1 and 1
-        horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
-        vertical = Input.GetAxisRaw("Vertical"); // -1 is down
+        bool canMove = true;
+
+        int x = playerPosition.x+1;
+        int y = playerPosition.y;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        if(dungeon.ContainsKey(newPos)) {
+            if(dungeon[newPos] == TileType.Wall) {
+                canMove =  false;
+            }
+        }
+        else {
+            canMove = true;
+        }
+        return canMove;
+    }
+
+    public bool CanLeft() {
+
+        bool canMove = true;
+
+        int x = playerPosition.x-1;
+        int y = playerPosition.y;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        if(dungeon.ContainsKey(newPos)) {
+            if(dungeon[newPos] == TileType.Wall) {
+                canMove =  false;
+            }
+        }
+        else {
+            canMove = true;
+        }
+        return canMove;
+    }
+
+    public bool CanUp() {
+
+        bool canMove = true;
+
+        int x = playerPosition.x;
+        int y = playerPosition.y+1;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        if(dungeon.ContainsKey(newPos)) {
+            if(dungeon[newPos] == TileType.Wall) {
+                canMove =  false;
+            }
+        }
+        else {
+            canMove = true;
+        }
+        return canMove;
 
     }
 
-    void FixedUpdate() {
+    public bool CanDown() {
 
-        if (horizontal != 0 && vertical != 0) { // Check for diagonal movement
+        bool canMove = true;
 
-            // limit movement speed diagonally, so you move at 70% speed
-            horizontal *= moveLimiter;
-            vertical *= moveLimiter;
+        int x = playerPosition.x;
+        int y = playerPosition.y-1;
 
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        if(dungeon.ContainsKey(newPos)) {
+            if(dungeon[newPos] == TileType.Wall) {
+                canMove =  false;
+            }
+        }
+        else {
+            canMove = true;
+        }
+        return canMove;
+    }
+    public void Update() {
+
+        if(Input.GetKeyDown("d") && CanRight()) {
+            MoveRight();
+        }
+        if(Input.GetKeyDown("a") && CanLeft()) {
+            MoveLeft();
+        }
+        if(Input.GetKeyDown("w") && CanUp()) {
+            MoveUp();
+        }
+        if(Input.GetKeyDown("s") && CanDown()) {
+            MoveDown();
         }
 
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
-    
+        playerTransform.position = playerPosition;
+
+    }
+
+    public void MoveRight() {
+
+        int x = playerPosition.x+1;
+        int y = playerPosition.y;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        playerPosition = newPos;
+
+    }
+
+    public void MoveLeft() {
+
+        int x = playerPosition.x-1;
+        int y = playerPosition.y;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        playerPosition = newPos;
+
+    }
+
+    public void MoveUp() {
+
+        int x = playerPosition.x;
+        int y = playerPosition.y+1;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        playerPosition = newPos;
+
+    }
+
+    public void MoveDown() {
+
+        int x = playerPosition.x;
+        int y = playerPosition.y-1;
+
+        Vector3Int newPos = new Vector3Int(x,y,0);
+
+        playerPosition = newPos;
+
     }
 
 }

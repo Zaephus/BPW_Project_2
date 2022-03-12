@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Entities
+    uniqueID: 3069921707
+    locked: 0
+  - name: Dungeon
+    uniqueID: 2323917985
+    locked: 0
