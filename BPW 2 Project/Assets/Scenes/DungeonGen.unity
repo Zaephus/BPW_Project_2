@@ -155,13 +155,14 @@ MonoBehaviour:
   floorPrefab: {fileID: 2985435657743677259, guid: 159e89c6c2e6f6d468467526228547a6, type: 3}
   wallPrefab: {fileID: 1236476040023200115, guid: ed8ed08c36ed83e4b9bb14dd05b40427, type: 3}
   playerPrefab: {fileID: 3220803106910708005, guid: 3091d9cf45881d747a233bc3dcde2a45, type: 3}
-  seed: 2192
+  seed: 9485
   gridWidth: 30
   gridHeight: 30
-  corridorRangeModifier: 0
+  spaceBetweenRooms: 3
   numRooms: 6
   minSize: 3
   maxSize: 7
+  roomList: []
 --- !u!4 &69013969
 Transform:
   m_ObjectHideFlags: 0

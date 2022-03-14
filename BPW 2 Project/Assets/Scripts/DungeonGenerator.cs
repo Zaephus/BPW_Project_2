@@ -16,7 +16,7 @@ public class DungeonGenerator : MonoBehaviour {
     public int gridWidth = 100;
     public int gridHeight = 100;
 
-    public float corridorRangeModifier = 0.7f;
+    public int spaceBetweenRooms = 3;
 
     public int numRooms = 10;
     public int minSize = 3;
@@ -24,6 +24,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int, TileType>();
     public List<Room> roomList = new List<Room>();
+
 
     public void Start() {
         GetSeed();
@@ -39,6 +40,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     }
 
+    [ContextMenu("Generate")]
     public void Generate() {
 
         for(int i = 0; i < numRooms; i++) {
@@ -59,8 +61,6 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
 
-        float corridorRange = (gridWidth+gridHeight)/(2+corridorRangeModifier);
-
         for(int i = 0; i < roomList.Count; i++) {
 
             Room room = roomList[i];
@@ -71,22 +71,32 @@ public class DungeonGenerator : MonoBehaviour {
                     continue;
                 }
 
-                if(Vector3Int.Distance(room.GetCenter(),roomList[j].GetCenter()) <= corridorRange) {
-                    if(CanConnectRooms(room,roomList[j])) {
-                        if((roomList[j].GetCenter().x < room.minX && roomList[j].GetCenter().x > room.maxX) || (roomList[j].GetCenter().y < room.minY && roomList[j].GetCenter().y > room.maxY)) {
-                            if(!room.connectedRooms.Contains(roomList[j]) && !roomList[j].connectedRooms.Contains(room)) {
-                                ConnectRooms(room,roomList[j]);
-                                continue;
-                            }
-                        }
-                        else {
+                if(CanConnectRooms(room,roomList[j])) {
+                    if((roomList[j].GetCenter().x < room.minX && roomList[j].GetCenter().x > room.maxX) || (roomList[j].GetCenter().y < room.minY && roomList[j].GetCenter().y > room.maxY)) {
+                        if(!room.connectedRooms.Contains(roomList[j]) && !roomList[j].connectedRooms.Contains(room)) {
                             ConnectRooms(room,roomList[j]);
                         }
+                    }
+                    else {
+                        ConnectRooms(room,roomList[j]);
                     }
                 }
 
             }
 
+        }
+
+        for(int i = 0; i < roomList.Count; i++) {
+            Room room = roomList[i];
+            if(room.connectedRooms.Count == 0) {
+                roomList.Remove(room);
+                for(int x = room.minX; x <= room.maxX; x++) {
+                    for(int y = room.minY; y <= room.maxY; y++) {
+                        Vector3Int location = new Vector3Int(x,y,0);
+                        dungeon.Remove(location);
+                    }
+                }
+            }
         }
 
         AllocateWalls();
@@ -242,8 +252,8 @@ public class DungeonGenerator : MonoBehaviour {
 
     public bool CanRoomFitInDungeon(Room room) {
 
-        for(int x = room.minX-2; x <= room.maxX+2; x++) {
-            for(int y = room.minY-2; y <= room.maxY+2; y++) {
+        for(int x = room.minX-spaceBetweenRooms; x <= room.maxX+spaceBetweenRooms; x++) {
+            for(int y = room.minY-spaceBetweenRooms; y <= room.maxY+spaceBetweenRooms; y++) {
                 if(dungeon.ContainsKey(new Vector3Int(x,y,0))) {
                     return false;
                 }
@@ -254,6 +264,8 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
 }
+
+[System.Serializable]
 
 public class Room {
 
