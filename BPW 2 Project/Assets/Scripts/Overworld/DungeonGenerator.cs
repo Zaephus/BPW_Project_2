@@ -23,8 +23,8 @@ public class DungeonGenerator : MonoBehaviour {
     public int maxSize = 7;
 
     public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int, TileType>();
-    public List<Room> roomList = new List<Room>();
-
+    
+    [SerializeField] public List<Room> roomList = new List<Room>();
 
     public void Start() {
         GetSeed();
@@ -43,7 +43,11 @@ public class DungeonGenerator : MonoBehaviour {
     [ContextMenu("Generate")]
     public void Generate() {
 
+        int safety = 0;
+
         for(int i = 0; i < numRooms; i++) {
+
+            safety++;
 
             int minX = Random.Range(0,gridWidth);
             int maxX = minX + Random.Range(minSize,maxSize+1);
@@ -55,7 +59,7 @@ public class DungeonGenerator : MonoBehaviour {
             if(CanRoomFitInDungeon(room)) {
                 AddRoomToDungeon(room);
             }
-            else {
+            else if(safety <= (numRooms*100)) {
                 i--;
             }
 
@@ -266,7 +270,6 @@ public class DungeonGenerator : MonoBehaviour {
 }
 
 [System.Serializable]
-
 public class Room {
 
     public int minX;
