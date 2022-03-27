@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     Rigidbody2D body;
-    public Transform playerTransform;
-    private Vector3Int playerPosition;
+
+    private Vector3Int targetPosition;
+
+    public float moveSpeed = 5f;
+
     DungeonGenerator dungeonGen;
 
     public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int, TileType>();
@@ -14,8 +17,9 @@ public class PlayerController : MonoBehaviour {
     public void Start() {
 
         body = GetComponent<Rigidbody2D>();
-        dungeonGen = FindObjectOfType<DungeonGenerator>();
-        playerPosition = Vector3Int.RoundToInt(playerTransform.position);
+        targetPosition = Vector3Int.RoundToInt(transform.position);
+
+        dungeonGen = FindObjectOfType<DungeonGenerator>();        
         dungeon = dungeonGen.dungeon;
         
     }
@@ -24,8 +28,8 @@ public class PlayerController : MonoBehaviour {
 
         bool canMove = true;
 
-        int x = playerPosition.x+1;
-        int y = playerPosition.y;
+        int x = targetPosition.x+1;
+        int y = targetPosition.y;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
@@ -44,8 +48,8 @@ public class PlayerController : MonoBehaviour {
 
         bool canMove = true;
 
-        int x = playerPosition.x-1;
-        int y = playerPosition.y;
+        int x = targetPosition.x-1;
+        int y = targetPosition.y;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
@@ -64,8 +68,8 @@ public class PlayerController : MonoBehaviour {
 
         bool canMove = true;
 
-        int x = playerPosition.x;
-        int y = playerPosition.y+1;
+        int x = targetPosition.x;
+        int y = targetPosition.y+1;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
@@ -85,8 +89,8 @@ public class PlayerController : MonoBehaviour {
 
         bool canMove = true;
 
-        int x = playerPosition.x;
-        int y = playerPosition.y-1;
+        int x = targetPosition.x;
+        int y = targetPosition.y-1;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
@@ -102,64 +106,68 @@ public class PlayerController : MonoBehaviour {
     }
     public void Update() {
 
-        if(Input.GetKeyDown("d") && CanRight()) {
-            MoveRight();
-        }
-        if(Input.GetKeyDown("a") && CanLeft()) {
-            MoveLeft();
-        }
-        if(Input.GetKeyDown("w") && CanUp()) {
-            MoveUp();
-        }
-        if(Input.GetKeyDown("s") && CanDown()) {
-            MoveDown();
-        }
+        transform.position = Vector3.MoveTowards(transform.position,targetPosition,moveSpeed*Time.deltaTime);
 
-        playerTransform.position = playerPosition;
+        if(Vector3.Distance(transform.position,targetPosition) <= 0.05f) {
+
+            if(Input.GetKey("d") && CanRight()) {
+                MoveRight();
+            }
+            if(Input.GetKey("a") && CanLeft()) {
+                MoveLeft();
+            }
+            if(Input.GetKey("w") && CanUp()) {
+                MoveUp();
+            }
+            if(Input.GetKey("s") && CanDown()) {
+                MoveDown();
+            }
+
+        }
 
     }
 
     public void MoveRight() {
 
-        int x = playerPosition.x+1;
-        int y = playerPosition.y;
+        int x = targetPosition.x+1;
+        int y = targetPosition.y;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
-        playerPosition = newPos;
+        targetPosition = newPos;
 
     }
 
     public void MoveLeft() {
 
-        int x = playerPosition.x-1;
-        int y = playerPosition.y;
+        int x = targetPosition.x-1;
+        int y = targetPosition.y;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
-        playerPosition = newPos;
+        targetPosition = newPos;
 
     }
 
     public void MoveUp() {
 
-        int x = playerPosition.x;
-        int y = playerPosition.y+1;
+        int x = targetPosition.x;
+        int y = targetPosition.y+1;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
-        playerPosition = newPos;
+        targetPosition = newPos;
 
     }
 
     public void MoveDown() {
 
-        int x = playerPosition.x;
-        int y = playerPosition.y-1;
+        int x = targetPosition.x;
+        int y = targetPosition.y-1;
 
         Vector3Int newPos = new Vector3Int(x,y,0);
 
-        playerPosition = newPos;
+        targetPosition = newPos;
 
     }
 

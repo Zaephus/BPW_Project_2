@@ -39,8 +39,7 @@ public class DungeonGenerator : MonoBehaviour {
         Random.InitState(seed);
 
     }
-
-    [ContextMenu("Generate")]
+    
     public void Generate() {
 
         int safety = 0;
