@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: PlayerUnit
   m_EditorClassIdentifier: 
   unitName: Player
-  maxHealth: 0
-  currentHealth: 0
-  baseAttackStrength: 0
-  currentAttackStrength: 0
-  baseDefenseStrength: 0
-  currentDefenseStrength: 0
+  maxHealth: 200
+  currentHealth: 200
+  baseAttackStrength: 120
+  currentAttackStrength: 120
+  baseDefenseStrength: 80
+  currentDefenseStrength: 80
   startPosX: 0
   startPosY: 0
   lastPosX: 0
   lastPosY: 0
+  abilities:
+  - {fileID: 11400000, guid: 6d0eafbe64546fb49afce3a8c8193da1, type: 2}
+  - {fileID: 11400000, guid: c48c1681650b58d4f885e72c37ef38da, type: 2}

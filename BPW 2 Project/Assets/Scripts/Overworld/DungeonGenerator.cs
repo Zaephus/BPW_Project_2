@@ -29,7 +29,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int,TileType>();
     public Dictionary<Vector3Int,EntityType> entities = new Dictionary<Vector3Int,EntityType>();
     
-    [SerializeField] public List<Room> roomList = new List<Room>();
+    public List<Room> roomList = new List<Room>();
 
     public void GetSeed() {
 
@@ -258,7 +258,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void AllocatePlayer() {
 
-        Room randomRoom = roomList[Random.Range(0,roomList.Count)];
+        int randomRoomNumber = Random.Range(0,roomList.Count);
+        Room randomRoom = roomList[randomRoomNumber];
+        roomList[randomRoomNumber].containsPlayer = true;
         Vector3Int randomTilePos = randomRoom.GetRandomTile();
         entities.Add(randomTilePos,EntityType.Player);
 
@@ -266,9 +268,16 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void AllocateEnemies() {
 
+        List<Room> tempRooms = new List<Room>();
+        foreach(Room r in roomList) {
+            if(!r.containsPlayer) {
+                tempRooms.Add(r);
+            }
+        }
+
         for(int i = 0; i < enemyAmount; i++) {
 
-            Room randomRoom = roomList[Random.Range(0,roomList.Count)];
+            Room randomRoom = tempRooms[Random.Range(0,tempRooms.Count)];
             Vector3Int randomTilePos = randomRoom.GetRandomTile();
 
             if(entities.ContainsKey(randomTilePos)) {
@@ -305,7 +314,6 @@ public class DungeonGenerator : MonoBehaviour {
 
 }
 
-[System.Serializable]
 public class Room {
 
     public int minX;
@@ -313,6 +321,8 @@ public class Room {
 
     public int minY;
     public int maxY;
+
+    public bool containsPlayer;
 
     public List<Room> connectedRooms = new List<Room>();
 

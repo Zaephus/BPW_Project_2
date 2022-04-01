@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : MonoBehaviour,IFightable {
 
     DungeonManager dungeon;
 
     Rigidbody2D body;
 
     public EnemyUnit baseUnit;
-    [SerializeField]
-    EnemyUnit unit;
+    public EnemyUnit unit;
 
-    public Transform targetSprite;
     private Vector3Int targetPosition;
 
     private Vector3Int nextPosition;
@@ -25,8 +24,6 @@ public class EnemyController : MonoBehaviour {
 
         unit = ScriptableObject.CreateInstance<EnemyUnit>();
         SetUnitValues();
-        unit.startPosX = transform.position.x;
-        unit.startPosY = transform.position.y;
 
         dungeon = FindObjectOfType<DungeonManager>();
 
@@ -52,8 +49,6 @@ public class EnemyController : MonoBehaviour {
     }
 
     public void MoveTowardsTarget(Vector3Int target) {
-
-        targetSprite.position = target;
 
         transform.position = Vector3.MoveTowards(transform.position,nextPosition,moveSpeed*Time.deltaTime);
 
@@ -298,7 +293,7 @@ public class EnemyController : MonoBehaviour {
 
     public void SetUnitValues() {
 
-        unit.unitName = baseUnit.unitName;
+        unit.unitName = baseUnit.unitName.Replace("Enemy","");
 
         unit.maxHealth = baseUnit.maxHealth;
         unit.currentHealth = baseUnit.currentHealth;
@@ -308,6 +303,13 @@ public class EnemyController : MonoBehaviour {
 
         unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
         unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
+
+        unit.startPosX = transform.position.x;
+        unit.startPosY = transform.position.y;
+
+        unit.unitPrefab = baseUnit.unitPrefab;
+
+        unit.abilities = baseUnit.abilities;
 
     }
 

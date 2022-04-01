@@ -165,7 +165,6 @@ MonoBehaviour:
   numRooms: 6
   minSize: 4
   maxSize: 7
-  roomList: []
 --- !u!4 &69013969
 Transform:
   m_ObjectHideFlags: 0

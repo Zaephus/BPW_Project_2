@@ -23,6 +23,15 @@ public class DungeonManager : MonoBehaviour {
         player = FindObjectOfType<PlayerController>();
         enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
 
+        // for(int i = 0; i < enemies.Count; i++) {
+        //     if(enemies[i].unit.currentHealth <= 0) {
+        //         Destroy(enemies[i].gameObject);
+        //     }
+        //     else {
+        //         SaveSystem.instance.SaveUnit(enemies[i].unit,enemies[i].unit.unitName + (i+1));
+        //     }
+        // }
+
     }
 
     public void Update() {}

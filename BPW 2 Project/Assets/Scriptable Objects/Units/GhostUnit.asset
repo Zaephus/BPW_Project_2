@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56dbf24aadf7d3b4893a9263a50e1de8, type: 3}
   m_Name: GhostUnit
   m_EditorClassIdentifier: 
-  unitName: Ghost
-  maxHealth: 0
-  currentHealth: 0
-  baseAttackStrength: 0
-  currentAttackStrength: 0
-  baseDefenseStrength: 0
-  currentDefenseStrength: 0
+  unitName: GhostEnemy
+  maxHealth: 100
+  currentHealth: 100
+  baseAttackStrength: 100
+  currentAttackStrength: 100
+  baseDefenseStrength: 120
+  currentDefenseStrength: 120
   startPosX: 0
   startPosY: 0
   lastPosX: 0
   lastPosY: 0
+  unitPrefab: {fileID: 7395246039282976492, guid: 9eb150b0a80e59645b9f171959049659, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: f96a8904a8523a040a8445104969855c, type: 2}
