@@ -14,8 +14,8 @@ public class BattleSystem : MonoBehaviour {
     public Transform playerPosition;
     public Transform enemyPosition;
 
-    public Unit playerUnit;
-    public Unit enemyUnit;
+    public PlayerUnit playerUnit;
+    public EnemyUnit enemyUnit;
 
     public Text dialogueText;
 
@@ -64,7 +64,7 @@ public class BattleSystem : MonoBehaviour {
         
         yield return new WaitForSeconds(2f);
 
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        bool isDead = enemyUnit.TakeDamage(playerUnit.currentAttackStrength);
         enemyHUD.SetHealth(enemyUnit.currentHealth);
 
         if(isDead) {
@@ -99,7 +99,7 @@ public class BattleSystem : MonoBehaviour {
 
         yield return new WaitForSeconds(2f);
 
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        bool isDead = playerUnit.TakeDamage(enemyUnit.currentAttackStrength);
         playerHUD.SetHealth(playerUnit.currentHealth);
 
         if(isDead) {

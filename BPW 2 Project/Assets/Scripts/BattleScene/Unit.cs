@@ -2,25 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Unit",menuName = "Unit")]
 public class Unit : ScriptableObject {
 
     public string unitName;
 
-    public int damage;
-
     public int maxHealth;
     public int currentHealth;
 
-    public int maxMana;
-    public int currentMana;
+    public int baseAttackStrength;
+    public int currentAttackStrength;
+
+    public int baseDefenseStrength;
+    public int currentDefenseStrength;
+
+    public float startPosX;
+    public float startPosY;
 
     public float lastPosX;
     public float lastPosY;
 
     public bool TakeDamage(int dmg) {
 
-        currentHealth -= dmg;
+        int damage = dmg/currentDefenseStrength;
+        if(damage <= 0) {
+            damage = 0;
+        }
+        currentHealth -= damage;
 
         if(currentHealth <= 0) {
             currentHealth = 0;
@@ -41,4 +48,25 @@ public class Unit : ScriptableObject {
         
     }
     
+}
+
+public class UnitSaver {
+
+    public string unitName;
+
+    public int maxHealth;
+    public int currentHealth;
+
+    public int baseAttackStrength;
+    public int currentAttackStrength;
+
+    public int baseDefenseStrength;
+    public int currentDefenseStrength;
+
+    public float startPosX;
+    public float startPosY;
+
+    public float lastPosX;
+    public float lastPosY;
+
 }

@@ -9,14 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21cb4125447701a42b3c13ab1d5db5fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 374b58e7953f6f74b881efd0e8345add, type: 3}
   m_Name: PlayerUnit
   m_EditorClassIdentifier: 
   unitName: Player
-  damage: 5
-  maxHealth: 20
-  currentHealth: 20
-  maxMana: 20
-  currentMana: 20
+  maxHealth: 0
+  currentHealth: 0
+  baseAttackStrength: 0
+  currentAttackStrength: 0
+  baseDefenseStrength: 0
+  currentDefenseStrength: 0
+  startPosX: 0
+  startPosY: 0
   lastPosX: 0
   lastPosY: 0

@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 69013969}
+  - component: {fileID: 69013970}
   - component: {fileID: 69013968}
   m_Layer: 0
   m_Name: Dungeon
@@ -155,9 +156,11 @@ MonoBehaviour:
   floorPrefab: {fileID: 2985435657743677259, guid: 159e89c6c2e6f6d468467526228547a6, type: 3}
   wallPrefab: {fileID: 1236476040023200115, guid: ed8ed08c36ed83e4b9bb14dd05b40427, type: 3}
   playerPrefab: {fileID: 3220803106910708005, guid: 3091d9cf45881d747a233bc3dcde2a45, type: 3}
+  ghostEnemyPrefab: {fileID: 5873731752675426744, guid: 636ff6862836f7742bc1cff549a34075, type: 3}
   seed: 0
   gridWidth: 30
   gridHeight: 30
+  enemyAmount: 8
   spaceBetweenRooms: 3
   numRooms: 6
   minSize: 4
@@ -177,6 +180,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &69013970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69013967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51562286c926e8a4caddeaf7319cebb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &291779247
 GameObject:
   m_ObjectHideFlags: 0

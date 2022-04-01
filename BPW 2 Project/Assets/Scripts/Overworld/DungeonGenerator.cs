@@ -4,17 +4,21 @@ using System.Linq;
 using UnityEngine;
 
 public enum TileType {Room,Corridor,Wall}
+public enum EntityType {Player,GhostEnemy}
 
 public class DungeonGenerator : MonoBehaviour {
 
     public GameObject floorPrefab;
     public GameObject wallPrefab;
     public GameObject playerPrefab;
+    public GameObject ghostEnemyPrefab;
 
     public int seed = 0;
 
     public int gridWidth = 100;
     public int gridHeight = 100;
+
+    public int enemyAmount = 8;
 
     public int spaceBetweenRooms = 3;
 
@@ -22,14 +26,10 @@ public class DungeonGenerator : MonoBehaviour {
     public int minSize = 3;
     public int maxSize = 7;
 
-    public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int, TileType>();
+    public Dictionary<Vector3Int,TileType> dungeon = new Dictionary<Vector3Int,TileType>();
+    public Dictionary<Vector3Int,EntityType> entities = new Dictionary<Vector3Int,EntityType>();
     
     [SerializeField] public List<Room> roomList = new List<Room>();
-
-    public void Start() {
-        GetSeed();
-        Generate();
-    }
 
     public void GetSeed() {
 
@@ -103,7 +103,8 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         AllocateWalls();
-
+        AllocatePlayer();
+        AllocateEnemies();
         SpawnDungeon();
 
     }
@@ -238,9 +239,45 @@ public class DungeonGenerator : MonoBehaviour {
 
         }
 
+        foreach(KeyValuePair<Vector3Int,EntityType> kv in entities) {
+
+            switch(kv.Value) {
+
+                case EntityType.Player:
+                    Instantiate(playerPrefab,kv.Key,Quaternion.identity);
+                    break;
+                
+                case EntityType.GhostEnemy:
+                    Instantiate(ghostEnemyPrefab,kv.Key,Quaternion.identity);
+                    break;
+                
+            }
+        }
+
+    }
+
+    public void AllocatePlayer() {
+
         Room randomRoom = roomList[Random.Range(0,roomList.Count)];
         Vector3Int randomTilePos = randomRoom.GetRandomTile();
-        Instantiate(playerPrefab,randomTilePos,Quaternion.identity,transform);
+        entities.Add(randomTilePos,EntityType.Player);
+
+    }
+
+    public void AllocateEnemies() {
+
+        for(int i = 0; i < enemyAmount; i++) {
+
+            Room randomRoom = roomList[Random.Range(0,roomList.Count)];
+            Vector3Int randomTilePos = randomRoom.GetRandomTile();
+
+            if(entities.ContainsKey(randomTilePos)) {
+                i--;
+            }
+            else {
+                entities.Add(randomTilePos,EntityType.GhostEnemy);
+            }
+        }
 
     }
 
