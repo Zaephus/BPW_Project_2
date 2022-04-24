@@ -26,7 +26,7 @@ public class SaveSystem : MonoBehaviour {
             path = Application.dataPath + "/SaveData/" + fileName + ".txt";
         }
         else {
-            path = Application.persistentDataPath + "/SaveData/" + fileName + ".txt";
+            path = Application.persistentDataPath + fileName + ".txt";
         }
     }
 
@@ -85,6 +85,9 @@ public class SaveSystem : MonoBehaviour {
             reader.Close();
             reader.Dispose();
 
+        }
+        else {
+            SaveUnit(unit,fileName);
         }
         
     }

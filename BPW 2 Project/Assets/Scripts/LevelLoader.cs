@@ -19,6 +19,7 @@ public class LevelLoader : MonoBehaviour {
     public float transitionTime = 2f;
 
     public Unit playerUnit;
+    [HideInInspector]
     public EnemyUnit currentUnit;
 
     public void LoadLevel(string levelName) {

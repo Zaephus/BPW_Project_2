@@ -55,7 +55,7 @@ public class BattleSystem : MonoBehaviour {
 
         for(int i = 0; i < playerUnit.abilities.Count; i++) {
 
-            GameObject abilityButton =Instantiate(abilityButtonPrefab,combatButtons.transform);
+            GameObject abilityButton = Instantiate(abilityButtonPrefab,combatButtons.transform);
 
             abilityButtons.Add(abilityButton.GetComponent<AttackButton>());
             abilityButtons[i].Initialize(playerUnit.abilities[i],this);
