@@ -699,7 +699,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4883095205657063636, guid: 02549bc81dc6b954d98fadbe439b42c7, type: 3}
-  enemyPrefab: {fileID: 7395246039282976492, guid: 9eb150b0a80e59645b9f171959049659, type: 3}
   abilityButtonPrefab: {fileID: 3916994391019374593, guid: ad04f83efde53044a874bc84b733c941, type: 3}
   playerPosition: {fileID: 1122616754}
   enemyPosition: {fileID: 2077071433}
@@ -707,7 +706,7 @@ MonoBehaviour:
   currentUnit: {fileID: 0}
   units: []
   dialogueText: {fileID: 5317892380580461219}
-  combatButtons: {fileID: 5317892380394930750}
+  combatButtons: {fileID: 5317892380394930751}
   abilityButtons: []
   playerHUD: {fileID: 243776093}
   enemyHUD: {fileID: 1365069698}
@@ -946,8 +945,8 @@ MonoBehaviour:
     m_Right: 15
     m_Top: 15
     m_Bottom: 15
-  m_ChildAlignment: 0
-  m_StartCorner: 0
+  m_ChildAlignment: 2
+  m_StartCorner: 1
   m_StartAxis: 0
   m_CellSize: {x: 85, y: 50}
   m_Spacing: {x: 10, y: 20}

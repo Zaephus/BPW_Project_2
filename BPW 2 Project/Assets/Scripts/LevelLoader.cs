@@ -46,6 +46,7 @@ public class LevelLoader : MonoBehaviour {
         playerUnit.currentDefenseStrength = playerUnit.baseDefenseStrength;
 
         SaveSystem.instance.SaveUnit(playerUnit,playerUnit.name);
+        SaveSystem.instance.SaveSeed(0,"DungeonSeed");
 
         LoadLevel("MainScene");
     }

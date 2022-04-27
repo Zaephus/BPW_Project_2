@@ -10,9 +10,15 @@ public class PlayerController : MonoBehaviour {
 
     private Vector3Int targetPosition;
 
+    public PlayerUnit baseUnit;
+    public PlayerUnit unit;
+
     public float moveSpeed = 5f;
 
     public void Start() {
+
+        unit = ScriptableObject.CreateInstance<PlayerUnit>();
+        SetUnitValues();
 
         dungeon = FindObjectOfType<DungeonManager>();
 
@@ -174,6 +180,23 @@ public class PlayerController : MonoBehaviour {
 
         return canMove;
         
+    }
+
+    public void SetUnitValues() {
+
+        unit.unitName = baseUnit.unitName.Replace("Base","");
+
+        unit.maxHealth = baseUnit.maxHealth;
+        unit.currentHealth = baseUnit.currentHealth;
+
+        unit.baseAttackStrength = baseUnit.baseAttackStrength;
+        unit.currentAttackStrength = baseUnit.currentAttackStrength;
+
+        unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
+        unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
+
+        unit.abilities = baseUnit.abilities;
+
     }
 
 }

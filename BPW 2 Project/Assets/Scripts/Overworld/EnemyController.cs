@@ -304,9 +304,6 @@ public class EnemyController : MonoBehaviour,IFightable {
         unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
         unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
 
-        unit.startPosX = transform.position.x;
-        unit.startPosY = transform.position.y;
-
         unit.unitPrefab = baseUnit.unitPrefab;
 
         unit.abilities = baseUnit.abilities;

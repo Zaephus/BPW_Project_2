@@ -15,9 +15,6 @@ public class Unit : ScriptableObject {
     public int baseDefenseStrength;
     public int currentDefenseStrength;
 
-    public float startPosX;
-    public float startPosY;
-
     public float lastPosX;
     public float lastPosY;
 
@@ -62,9 +59,6 @@ public class UnitSaver {
 
     public int baseDefenseStrength;
     public int currentDefenseStrength;
-
-    public float startPosX;
-    public float startPosY;
 
     public float lastPosX;
     public float lastPosY;

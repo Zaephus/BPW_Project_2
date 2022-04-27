@@ -23,18 +23,23 @@ public class DungeonManager : MonoBehaviour {
         player = FindObjectOfType<PlayerController>();
         enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
 
-        // for(int i = 0; i < enemies.Count; i++) {
-        //     if(enemies[i].unit.currentHealth <= 0) {
-        //         Destroy(enemies[i].gameObject);
-        //     }
-        //     else {
-        //         SaveSystem.instance.SaveUnit(enemies[i].unit,enemies[i].unit.unitName + (i+1));
-        //     }
-        // }
+        SaveSystem.instance.LoadUnit(player.unit,player.unit.unitName);
+        player.transform.position = new Vector3(player.unit.lastPosX,player.unit.lastPosY);
+
+        for(int i = 0; i < enemies.Count; i++) {
+
+            SaveSystem.instance.LoadUnit(enemies[i].unit,enemies[i].unit.unitName + i);
+
+            if(enemies[i].unit.currentHealth <= 0) {
+                Destroy(enemies[i].gameObject);
+                enemies.RemoveAt(i);
+            }
+            else {
+                enemies[i].transform.position = new Vector3(enemies[i].unit.lastPosX,enemies[i].unit.lastPosY,0);
+            }
+        }
 
     }
-
-    public void Update() {}
 
     public bool EntityOnTile(Vector3Int targetTile) {
 

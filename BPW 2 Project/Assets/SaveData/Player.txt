@@ -1,5 +1,5 @@
 {
-    "unitName": "PlayerBase",
+    "unitName": "Player",
     "maxHealth": 200,
     "currentHealth": 200,
     "baseAttackStrength": 120,

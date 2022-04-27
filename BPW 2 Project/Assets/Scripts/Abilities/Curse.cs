@@ -27,7 +27,7 @@ public class Curse : Ability {
             battleSystem.StartCoroutine(battleSystem.EndBattle());
         }
         else {
-            battleSystem.state = BattleState.PlayerTurn;
+            battleSystem.state = BattleState.Wait;
             battleSystem.StartCoroutine(battleSystem.PlayerTurn());
         }
 

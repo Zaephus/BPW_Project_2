@@ -33,6 +33,8 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void GetSeed() {
 
+        seed = SaveSystem.instance.LoadSeed("DungeonSeed");
+
         if(seed == 0) {
             seed = Random.Range(1000,9999);
         }
@@ -106,6 +108,8 @@ public class DungeonGenerator : MonoBehaviour {
         AllocatePlayer();
         AllocateEnemies();
         SpawnDungeon();
+
+        SaveSystem.instance.SaveSeed(seed,"DungeonSeed");
 
     }
 
@@ -312,6 +316,10 @@ public class DungeonGenerator : MonoBehaviour {
 
     }
 
+}
+
+public class DungeonSaver {
+    public int seed;
 }
 
 public class Room {

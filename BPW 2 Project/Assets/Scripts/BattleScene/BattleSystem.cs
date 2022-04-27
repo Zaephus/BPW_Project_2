@@ -16,12 +16,13 @@ public class BattleSystem : MonoBehaviour {
     public Transform enemyPosition;
 
     public PlayerUnit playerUnit;
+    [HideInInspector]
     public EnemyUnit currentUnit;
     public List<EnemyUnit> units = new List<EnemyUnit>();
 
     public Text dialogueText;
 
-    public GameObject combatButtons;
+    public RectTransform combatButtons;
     public List<AttackButton> abilityButtons = new List<AttackButton>();
 
     public BattleHUD playerHUD;
@@ -43,10 +44,10 @@ public class BattleSystem : MonoBehaviour {
     public void Update() {
 
         if(state == BattleState.PlayerTurn) {
-            combatButtons.SetActive(true);
+            combatButtons.localScale = new Vector3(1,1,1);
         }
         else {
-            combatButtons.SetActive(false);
+            combatButtons.localScale = new Vector3(0,0,0);
         }
 
     }

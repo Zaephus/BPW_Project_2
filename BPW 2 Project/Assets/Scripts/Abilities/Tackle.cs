@@ -15,6 +15,8 @@ public class Tackle : Ability {
 
     public override IEnumerator DoBehaviour() {
 
+        battleSystem.state = BattleState.Wait;
+
         battleSystem.dialogueText.text = "You tackle the enemy " + battleSystem.currentUnit.unitName + "!";
 
         yield return new WaitForSeconds(2f);

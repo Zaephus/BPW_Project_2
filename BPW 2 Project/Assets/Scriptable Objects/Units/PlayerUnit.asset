@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 374b58e7953f6f74b881efd0e8345add, type: 3}
   m_Name: PlayerUnit
   m_EditorClassIdentifier: 
-  unitName: Player
+  unitName: PlayerBase
   maxHealth: 200
-  currentHealth: 200
+  currentHealth: 71
   baseAttackStrength: 120
   currentAttackStrength: 120
   baseDefenseStrength: 80
   currentDefenseStrength: 80
-  startPosX: 0
-  startPosY: 0
   lastPosX: 0
   lastPosY: 0
   abilities:

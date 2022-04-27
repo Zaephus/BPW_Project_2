@@ -92,4 +92,41 @@ public class SaveSystem : MonoBehaviour {
         
     }
 
+    public void SaveSeed(int seed,string fileName) {
+
+        SetPath(fileName);
+
+        DungeonSaver targetSeed = new DungeonSaver();
+
+        targetSeed.seed = seed;
+
+        StreamWriter writer = new StreamWriter(path,false);
+
+        writer.WriteLine(JsonUtility.ToJson(targetSeed,true));
+        writer.Close();
+        writer.Dispose();
+
+    }
+
+    public int LoadSeed(string fileName) {
+
+        SetPath(fileName);
+
+        if(File.Exists(path)) {
+
+            StreamReader reader = new StreamReader(path);
+
+            DungeonSaver targetSeed = JsonUtility.FromJson<DungeonSaver>(reader.ReadToEnd());
+
+            reader.Close();
+            reader.Dispose();
+
+            return targetSeed.seed;
+
+        }
+        else {
+            return 0;
+        }
+    }
+
 }

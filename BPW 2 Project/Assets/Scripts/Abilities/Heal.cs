@@ -15,6 +15,8 @@ public class Heal : Ability {
 
     public override IEnumerator DoBehaviour() {
 
+        battleSystem.state = BattleState.Wait;
+
         if(battleSystem.playerUnit.currentHealth < battleSystem.playerUnit.maxHealth) {
         
             battleSystem.dialogueText.text = "You heal by " + healAmount + " HP!";
@@ -31,6 +33,7 @@ public class Heal : Ability {
         else {
             battleSystem.dialogueText.text = "You can not heal, you are already at full health!";
             yield return new WaitForSeconds(2f);
+            battleSystem.state = BattleState.PlayerTurn;
         }
 
 
