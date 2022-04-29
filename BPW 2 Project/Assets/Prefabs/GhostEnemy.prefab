@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 211260927707882709}
   - component: {fileID: 2456543764172547647}
   - component: {fileID: 2141195041189096717}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: GhostEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseUnit: {fileID: 11400000, guid: 144d6808130385a4a9e2ebf886081ff2, type: 2}
   unit: {fileID: 0}
-  targetSprite: {fileID: 0}
   moveSpeed: 1.5
   viewDist: 5
   randomTileRange: 4
