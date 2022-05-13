@@ -9,9 +9,12 @@ public class EnemyController : MonoBehaviour,IFightable {
 
     Rigidbody2D body;
 
+    public string name;
+
     public EnemyUnit baseUnit;
     public EnemyUnit unit;
 
+    public Vector3Int startPos;
     private Vector3Int targetPosition;
 
     private Vector3Int nextPosition;
@@ -20,10 +23,10 @@ public class EnemyController : MonoBehaviour,IFightable {
     public int viewDist = 2;
     public int randomTileRange = 4;
 
-    public void Start() {
+    public void OnStart() {
 
         unit = ScriptableObject.CreateInstance<EnemyUnit>();
-        SetUnitValues();
+        SetUnitValues(name);
 
         dungeon = FindObjectOfType<DungeonManager>();
 
@@ -33,7 +36,7 @@ public class EnemyController : MonoBehaviour,IFightable {
         
     }
 
-    public void Update() {
+    public void OnUpdate() {
 
         if(Vector3.Distance(transform.position,dungeon.player.transform.position) <= viewDist) {
             MoveTowardsTarget(Vector3Int.FloorToInt(dungeon.player.transform.position));
@@ -159,6 +162,7 @@ public class EnemyController : MonoBehaviour,IFightable {
 
     }
 
+    #region movement
     public void MoveRight() {
 
         int x = nextPosition.x+1;
@@ -290,8 +294,9 @@ public class EnemyController : MonoBehaviour,IFightable {
         return canMove;
         
     }
+    #endregion
 
-    public void SetUnitValues() {
+    public void SetUnitValues(string fileName) {
 
         unit.unitName = baseUnit.unitName.Replace("Enemy","");
 
@@ -304,9 +309,14 @@ public class EnemyController : MonoBehaviour,IFightable {
         unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
         unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
 
+        unit.lastPosX = startPos.x;
+        unit.lastPosY = startPos.y;
+
         unit.unitPrefab = baseUnit.unitPrefab;
 
         unit.abilities = baseUnit.abilities;
+
+        SaveSystem.instance.SaveUnit(unit,fileName);
 
     }
 

@@ -33,7 +33,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void GetSeed() {
 
-        seed = SaveSystem.instance.LoadSeed("DungeonSeed");
+        //seed = SaveSystem.instance.LoadSeed("DungeonSeed");
 
         if(seed == 0) {
             seed = Random.Range(1000,9999);
@@ -248,11 +248,15 @@ public class DungeonGenerator : MonoBehaviour {
             switch(kv.Value) {
 
                 case EntityType.Player:
-                    Instantiate(playerPrefab,kv.Key,Quaternion.identity);
+                    GameObject player = Instantiate(playerPrefab,kv.Key,Quaternion.identity);
+                    player.GetComponent<PlayerController>().startPos.x = kv.Key.x;
+                    player.GetComponent<PlayerController>().startPos.y = kv.Key.y;
                     break;
                 
                 case EntityType.GhostEnemy:
-                    Instantiate(ghostEnemyPrefab,kv.Key,Quaternion.identity);
+                    GameObject enemy = Instantiate(ghostEnemyPrefab,kv.Key,Quaternion.identity);
+                    enemy.GetComponent<EnemyController>().startPos.x = kv.Key.x;
+                    enemy.GetComponent<EnemyController>().startPos.y = kv.Key.y;
                     break;
                 
             }

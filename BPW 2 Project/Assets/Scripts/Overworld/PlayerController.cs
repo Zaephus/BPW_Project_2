@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour {
     public PlayerUnit baseUnit;
     public PlayerUnit unit;
 
+    public Vector3Int startPos;
+
     public float moveSpeed = 5f;
 
-    public void Start() {
+    public void OnStart() {
 
         unit = ScriptableObject.CreateInstance<PlayerUnit>();
         SetUnitValues();
@@ -27,7 +29,7 @@ public class PlayerController : MonoBehaviour {
         
     }
     
-    public void Update() {
+    public void OnUpdate() {
 
         transform.position = Vector3.MoveTowards(transform.position,targetPosition,moveSpeed*Time.deltaTime);
 
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    #region movement
     public void MoveRight() {
 
         int x = targetPosition.x+1;
@@ -181,6 +184,7 @@ public class PlayerController : MonoBehaviour {
         return canMove;
         
     }
+    #endregion
 
     public void SetUnitValues() {
 
@@ -195,7 +199,12 @@ public class PlayerController : MonoBehaviour {
         unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
         unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
 
+        unit.lastPosX = startPos.x;
+        unit.lastPosY = startPos.y;
+
         unit.abilities = baseUnit.abilities;
+
+        SaveSystem.instance.SaveUnit(unit,unit.unitName);
 
     }
 

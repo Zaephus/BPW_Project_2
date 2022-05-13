@@ -14,10 +14,8 @@ public class SaveSystem : MonoBehaviour {
     public static SaveSystem instance;
 
     void Awake() {
-        
         instance = this;
         DontDestroyOnLoad(this.gameObject);
-
     }
     #endregion
 

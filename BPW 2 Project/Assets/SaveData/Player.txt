@@ -1,11 +1,11 @@
 {
     "unitName": "Player",
     "maxHealth": 200,
-    "currentHealth": 200,
+    "currentHealth": 71,
     "baseAttackStrength": 120,
     "currentAttackStrength": 120,
     "baseDefenseStrength": 80,
     "currentDefenseStrength": 80,
-    "lastPosX": 0.0,
-    "lastPosY": 0.0
+    "lastPosX": 10.0,
+    "lastPosY": 7.0
 }

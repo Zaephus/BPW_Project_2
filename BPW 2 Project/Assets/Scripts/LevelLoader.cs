@@ -9,16 +9,13 @@ public class LevelLoader : MonoBehaviour {
     public static LevelLoader instance;
 
     void Awake() {
-        
         instance = this;
         DontDestroyOnLoad(this.gameObject);
-
     }
     #endregion
 
     public float transitionTime = 2f;
 
-    public Unit playerUnit;
     [HideInInspector]
     public EnemyUnit currentUnit;
 
@@ -41,13 +38,7 @@ public class LevelLoader : MonoBehaviour {
 
     public void StartGame() {
 
-        playerUnit.currentHealth = playerUnit.maxHealth;
-        playerUnit.currentAttackStrength = playerUnit.baseAttackStrength;
-        playerUnit.currentDefenseStrength = playerUnit.baseDefenseStrength;
-
-        SaveSystem.instance.SaveUnit(playerUnit,playerUnit.name);
         SaveSystem.instance.SaveSeed(0,"DungeonSeed");
-
         LoadLevel("MainScene");
     }
 

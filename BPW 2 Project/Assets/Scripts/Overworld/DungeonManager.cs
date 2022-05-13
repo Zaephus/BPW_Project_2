@@ -23,12 +23,18 @@ public class DungeonManager : MonoBehaviour {
         player = FindObjectOfType<PlayerController>();
         enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
 
+        player.OnStart();
+
         SaveSystem.instance.LoadUnit(player.unit,player.unit.unitName);
         player.transform.position = new Vector3(player.unit.lastPosX,player.unit.lastPosY);
 
         for(int i = 0; i < enemies.Count; i++) {
 
-            SaveSystem.instance.LoadUnit(enemies[i].unit,enemies[i].unit.unitName + i);
+            enemies[i].name = enemies[i].unit.unitName + i;
+            enemies[i].OnStart();
+            //enemies[i].SetUnitValues(enemies[i].unit.unitName + i);
+
+            SaveSystem.instance.LoadUnit(enemies[i].unit,enemies[i].name);
 
             if(enemies[i].unit.currentHealth <= 0) {
                 Destroy(enemies[i].gameObject);
@@ -37,6 +43,16 @@ public class DungeonManager : MonoBehaviour {
             else {
                 enemies[i].transform.position = new Vector3(enemies[i].unit.lastPosX,enemies[i].unit.lastPosY,0);
             }
+        }
+
+    }
+
+    public void Update() {
+
+        player.OnUpdate();
+
+        for(int i = 0; i < enemies.Count; i++) {
+            enemies[i].OnUpdate();
         }
 
     }

@@ -1,0 +1,11 @@
+{
+    "unitName": "",
+    "maxHealth": 0,
+    "currentHealth": 0,
+    "baseAttackStrength": 0,
+    "currentAttackStrength": 0,
+    "baseDefenseStrength": 0,
+    "currentDefenseStrength": 0,
+    "lastPosX": 29.0,
+    "lastPosY": 13.0
+}
