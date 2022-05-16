@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour {
 
     private Vector3Int targetPosition;
 
-    public PlayerUnit baseUnit;
     public PlayerUnit unit;
 
     public Vector3Int startPos;
@@ -18,9 +17,6 @@ public class PlayerController : MonoBehaviour {
     public float moveSpeed = 5f;
 
     public void OnStart() {
-
-        unit = ScriptableObject.CreateInstance<PlayerUnit>();
-        SetUnitValues();
 
         dungeon = FindObjectOfType<DungeonManager>();
 
@@ -185,27 +181,5 @@ public class PlayerController : MonoBehaviour {
         
     }
     #endregion
-
-    public void SetUnitValues() {
-
-        unit.unitName = baseUnit.unitName.Replace("Base","");
-
-        unit.maxHealth = baseUnit.maxHealth;
-        unit.currentHealth = baseUnit.currentHealth;
-
-        unit.baseAttackStrength = baseUnit.baseAttackStrength;
-        unit.currentAttackStrength = baseUnit.currentAttackStrength;
-
-        unit.baseDefenseStrength = baseUnit.baseDefenseStrength;
-        unit.currentDefenseStrength = baseUnit.currentDefenseStrength;
-
-        unit.lastPosX = startPos.x;
-        unit.lastPosY = startPos.y;
-
-        unit.abilities = baseUnit.abilities;
-
-        SaveSystem.instance.SaveUnit(unit,unit.unitName);
-
-    }
 
 }

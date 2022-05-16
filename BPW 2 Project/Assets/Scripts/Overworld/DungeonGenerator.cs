@@ -33,7 +33,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void GetSeed() {
 
-        //seed = SaveSystem.instance.LoadSeed("DungeonSeed");
+        seed = SaveSystem.instance.LoadSeed("DungeonSeed");
 
         if(seed == 0) {
             seed = Random.Range(1000,9999);

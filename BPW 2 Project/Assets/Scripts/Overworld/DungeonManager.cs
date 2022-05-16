@@ -27,7 +27,6 @@ public class DungeonManager : MonoBehaviour {
         player.transform.position = new Vector3(player.unit.lastPosX,player.unit.lastPosY);
         
         enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
-        Debug.Log(enemies.Count);
 
         for(int i = 0; i < enemies.Count; i++) {
 

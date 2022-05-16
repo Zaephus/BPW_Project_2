@@ -6,6 +6,6 @@
     "currentAttackStrength": 100,
     "baseDefenseStrength": 120,
     "currentDefenseStrength": 120,
-    "lastPosX": 19.0,
-    "lastPosY": 16.0
+    "lastPosX": 8.0,
+    "lastPosY": 15.0
 }
