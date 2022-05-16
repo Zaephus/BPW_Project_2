@@ -21,20 +21,20 @@ public class DungeonManager : MonoBehaviour {
         dungeon = dungeonGen.dungeon;
 
         player = FindObjectOfType<PlayerController>();
-        enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
-
         player.OnStart();
 
         SaveSystem.instance.LoadUnit(player.unit,player.unit.unitName);
         player.transform.position = new Vector3(player.unit.lastPosX,player.unit.lastPosY);
+        
+        enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
+        Debug.Log(enemies.Count);
 
         for(int i = 0; i < enemies.Count; i++) {
 
-            enemies[i].name = enemies[i].unit.unitName + i;
+            enemies[i].enemyName = enemies[i].baseUnit.unitName + i;
             enemies[i].OnStart();
-            //enemies[i].SetUnitValues(enemies[i].unit.unitName + i);
 
-            SaveSystem.instance.LoadUnit(enemies[i].unit,enemies[i].name);
+            SaveSystem.instance.LoadUnit(enemies[i].unit,enemies[i].enemyName);
 
             if(enemies[i].unit.currentHealth <= 0) {
                 Destroy(enemies[i].gameObject);

@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour,IFightable {
 
     Rigidbody2D body;
 
-    public string name;
+    public string enemyName;
 
     public EnemyUnit baseUnit;
     public EnemyUnit unit;
@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour,IFightable {
     public void OnStart() {
 
         unit = ScriptableObject.CreateInstance<EnemyUnit>();
-        SetUnitValues(name);
+        SetUnitValues(enemyName);
 
         dungeon = FindObjectOfType<DungeonManager>();
 

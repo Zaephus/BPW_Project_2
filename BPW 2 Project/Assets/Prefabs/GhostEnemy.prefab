@@ -131,7 +131,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &2141195041189096717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,8 +144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e634415fa1d82d641a1c998296744440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyName: 
   baseUnit: {fileID: 11400000, guid: 144d6808130385a4a9e2ebf886081ff2, type: 2}
   unit: {fileID: 0}
+  startPos: {x: 0, y: 0, z: 0}
   moveSpeed: 1.5
   viewDist: 5
   randomTileRange: 4

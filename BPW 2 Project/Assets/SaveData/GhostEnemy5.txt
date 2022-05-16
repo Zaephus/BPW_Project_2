@@ -1,0 +1,11 @@
+{
+    "unitName": "Ghost",
+    "maxHealth": 100,
+    "currentHealth": 100,
+    "baseAttackStrength": 100,
+    "currentAttackStrength": 100,
+    "baseDefenseStrength": 120,
+    "currentDefenseStrength": 120,
+    "lastPosX": 2.0,
+    "lastPosY": 10.0
+}

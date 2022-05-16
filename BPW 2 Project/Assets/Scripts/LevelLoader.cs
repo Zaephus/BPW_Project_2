@@ -37,7 +37,6 @@ public class LevelLoader : MonoBehaviour {
     }
 
     public void StartGame() {
-
         SaveSystem.instance.SaveSeed(0,"DungeonSeed");
         LoadLevel("MainScene");
     }
